@@ -26,9 +26,19 @@ public interface BrandService {
 
     /**
      * 根据条件查询
+     *
      * @param searchMap
      * @return
      */
-    public List<Brand> searchList(Map<String,Object> searchMap);
+    public List<Brand> searchList(Map<String, Object> searchMap);
+
+    /**
+     * 分页条件查询
+     * @param searchMap
+     * @param page
+     * @param size
+     * @return
+     */
+    public Page<Brand> findPage(Map<String, Object> searchMap, int page, int size);
 
 }

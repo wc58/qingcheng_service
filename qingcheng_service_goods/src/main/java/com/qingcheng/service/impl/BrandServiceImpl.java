@@ -6,7 +6,6 @@ import com.github.pagehelper.PageHelper;
 import com.qingcheng.dao.BrandMapper;
 import com.qingcheng.pojo.goods.Brand;
 import com.qingcheng.service.goods.BrandService;
-import org.omg.CORBA.OBJ_ADAPTER;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import tk.mybatis.mapper.entity.Example;
@@ -25,6 +24,7 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     public List<Brand> findAll() {
+        //直接调用接口查询全部
         return brandMapper.selectAll();
     }
 
@@ -40,6 +40,28 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public List<Brand> searchList(Map<String, Object> searchMap) {
         //设置条件
+        Example example = createExample(searchMap);
+        List<Brand> brandList = brandMapper.selectByExample(example);
+        return brandList;
+    }
+
+
+    @Override
+    public Page<Brand> findPage(Map<String, Object> searchMap, int page, int size) {
+        //设置条件
+        Example example = createExample(searchMap);
+        //使用分页插件拦截sql达到分页效果
+        PageHelper.startPage(page, size);
+        Page<Brand> brandPage= (Page<Brand>) brandMapper.selectByExample(example);
+        return brandPage;
+    }
+
+    /**
+     * 封装查询条件
+     * @param searchMap
+     * @return
+     */
+    private Example createExample(Map<String, Object> searchMap) {
         Example example = new Example(Brand.class);
         Example.Criteria criteria = example.createCriteria();
         //防止空指针
@@ -55,8 +77,7 @@ public class BrandServiceImpl implements BrandService {
                 criteria.andEqualTo("letter", letter);
             }
         }
-        //执行条件查询
-        List<Brand> brandList = brandMapper.selectByExample(example);
-        return brandList;
+        return example;
     }
+
 }
