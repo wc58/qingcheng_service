@@ -52,12 +52,33 @@ public class BrandServiceImpl implements BrandService {
         Example example = createExample(searchMap);
         //使用分页插件拦截sql达到分页效果
         PageHelper.startPage(page, size);
-        Page<Brand> brandPage= (Page<Brand>) brandMapper.selectByExample(example);
+        Page<Brand> brandPage = (Page<Brand>) brandMapper.selectByExample(example);
         return brandPage;
+    }
+
+    @Override
+    public Brand findById(Integer id) {
+        return brandMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public void add(Brand brand) {
+        brandMapper.insert(brand);
+    }
+
+    @Override
+    public void update(Brand brand) {
+        brandMapper.updateByPrimaryKeySelective(brand);
+    }
+
+    @Override
+    public void delete(Integer id) {
+        brandMapper.deleteByPrimaryKey(id);
     }
 
     /**
      * 封装查询条件
+     *
      * @param searchMap
      * @return
      */

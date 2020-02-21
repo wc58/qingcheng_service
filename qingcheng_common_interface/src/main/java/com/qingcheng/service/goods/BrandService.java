@@ -9,23 +9,23 @@ import java.util.Map;
 public interface BrandService {
 
     /**
-     * 查询全部品牌
+     * 查询全部
      *
-     * @return 品牌集合
+     * @return
      */
     public List<Brand> findAll();
 
     /**
-     * 分页查询品牌
+     * 分页查询
      *
-     * @param page 当前页码
-     * @param size 总条数
-     * @return 分页结果（品牌）
+     * @param page
+     * @param size
+     * @return
      */
     public Page<Brand> findPage(int page, int size);
 
     /**
-     * 根据条件查询
+     * 条件查询
      *
      * @param searchMap
      * @return
@@ -40,5 +40,30 @@ public interface BrandService {
      * @return
      */
     public Page<Brand> findPage(Map<String, Object> searchMap, int page, int size);
+
+    /**
+     * id查询
+     * @param id
+     * @return
+     */
+    public Brand findById(Integer id);
+
+    /**
+     * 添加
+     * @param brand
+     */
+    public void add(Brand brand);
+
+    /**
+     * 修改
+     * @param brand
+     */
+    public void update(Brand brand);
+
+    /**
+     * id删除
+     * @param id
+     */
+    public void delete(Integer id);
 
 }
