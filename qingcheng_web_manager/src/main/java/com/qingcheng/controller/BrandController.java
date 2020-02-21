@@ -87,44 +87,31 @@ public class BrandController {
      */
     @PostMapping("/add")
     public R add(@RequestBody Brand brand) {
-        try {
-            brandService.add(brand);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return R.ERROR().data("message", e.getMessage());
-        }
+        brandService.add(brand);
         return R.OK();
     }
 
     /**
      * 修改
+     *
      * @param brand
      * @return
      */
     @PostMapping("/update")
     public R update(@RequestBody Brand brand) {
-        try {
-            brandService.update(brand);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return R.ERROR().data("message", e.getMessage());
-        }
+        brandService.update(brand);
         return R.OK();
     }
 
     /**
      * id删除
+     *
      * @param id
      * @return
      */
     @DeleteMapping("/delete/{id}")
-    public R delete(@PathVariable(value = "id") Integer id){
-        try {
-            brandService.delete(id);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return R.ERROR().data("message",e.getMessage());
-        }
+    public R delete(@PathVariable(value = "id") Integer id) {
+        brandService.delete(id);
         return R.OK();
     }
 
