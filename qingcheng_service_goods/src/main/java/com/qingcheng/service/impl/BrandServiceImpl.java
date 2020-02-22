@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,12 +30,16 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public Page<Brand> findPage(int page, int size) {
+    public Map<String,Object> findPage(int page, int size) {
         //使用分页插件拦截sql达到分页效果
         PageHelper.startPage(page, size);
         //强制转换为分页结果集
         Page<Brand> brandPage = (Page<Brand>) brandMapper.selectAll();
-        return brandPage;
+        //封装数据
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("total",brandPage.getTotal());
+        map.put("rows",brandPage.getResult());
+        return map;
     }
 
     @Override
@@ -47,13 +52,17 @@ public class BrandServiceImpl implements BrandService {
 
 
     @Override
-    public Page<Brand> findPage(Map<String, Object> searchMap, int page, int size) {
+    public Map<String,Object> findPage(Map<String, Object> searchMap, int page, int size) {
         //设置条件
         Example example = createExample(searchMap);
         //使用分页插件拦截sql达到分页效果
         PageHelper.startPage(page, size);
         Page<Brand> brandPage = (Page<Brand>) brandMapper.selectByExample(example);
-        return brandPage;
+        //封装数据
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("total",brandPage.getTotal());
+        map.put("rows",brandPage.getResult());
+        return map;
     }
 
     @Override

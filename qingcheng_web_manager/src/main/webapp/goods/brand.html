@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>品牌列表</title>
+    <link rel="stylesheet" href="../css/elementui(1)_20190730_094254.css">
+</head>
+<body>
+<div id="app">
+    <el-table
+            :data="tableData"
+            border
+            style="width: 100%">
+        <el-table-column
+                prop="id"
+                label="ID"
+                width="180">
+        </el-table-column>
+        <el-table-column
+                prop="name"
+                label="名称"
+                width="180">
+        </el-table-column>
+        <el-table-column
+                prop="letter"
+                label="首字母"
+                width="180">
+        </el-table-column>
+        <el-table-column
+                label="图片">
+            <template slot-scope="scope">
+                <img :src="scope.row.image">
+            </template>
+        </el-table-column>
+    </el-table>
+    <el-pagination
+            @size-change="fetchData"
+            @current-change="handleCurrentChange"
+            :current-page.sync="currentPage"
+            :page-sizes="[10, 20, 30, 40]"
+            :page-size="size"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="total">
+    </el-pagination>
+</div>
+<script src="../js/vue(1).js"></script>
+<script src="../js/axios.js"></script>
+<script src="../js/elementui(1).js"></script>
+<script>
+    new Vue({
+        el: "#app",
+        data: {
+            tableData: [],
+            currentPage: 1,
+            size: 10,
+            total: 10
+        },
+        created() {
+           this.fetchData()
+        },
+        methods: {
+            fetchData() {
+                axios.get(`http://localhost:9101/brand/findPage/${this.currentPage}/${this.size}.do`).then(response => {
+                    this.tableData = response.data.data.rows
+                    this.total = response.data.data.total
+                })
+            }
+        }
+    })
+</script>
+</body>
+</html>

@@ -5,8 +5,6 @@ import com.github.pagehelper.Page;
 import com.qingcheng.pojo.entity.R;
 import com.qingcheng.pojo.goods.Brand;
 import com.qingcheng.service.goods.BrandService;
-import jdk.nashorn.internal.ir.IdentNode;
-import org.omg.PortableInterceptor.INACTIVE;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,7 +18,7 @@ public class BrandController {
     private BrandService brandService;
 
     /**
-     * 查询所有品牌
+     * 查询所有
      *
      * @return
      */
@@ -30,7 +28,7 @@ public class BrandController {
     }
 
     /**
-     * 分页查询品牌
+     * 分页查询
      *
      * @param page
      * @param size
@@ -38,12 +36,12 @@ public class BrandController {
      */
     @GetMapping("/findPage/{page}/{size}")
     public R findPage(@PathVariable(value = "page") Integer page, @PathVariable(value = "size") Integer size) {
-        Page<Brand> pageResult = brandService.findPage(page, size);
-        return R.OK().data("total", pageResult.getTotal()).data("rows", pageResult.getResult());
+        Map<String, Object> pageResult = brandService.findPage(page, size);
+        return R.OK().data(pageResult);
     }
 
     /**
-     * 分页查询
+     * 条件查询
      *
      * @param searchMap
      * @return
@@ -64,8 +62,8 @@ public class BrandController {
      */
     @PostMapping("/findPage/{page}/{size}")
     public R searchPage(@RequestBody Map<String, Object> searchMap, @PathVariable(value = "page") Integer page, @PathVariable(value = "size") Integer size) {
-        Page<Brand> brandPage = brandService.findPage(searchMap, page, size);
-        return R.OK().data("total", brandPage.getTotal()).data("rows", brandPage.getResult());
+        Map<String, Object> pageResult = brandService.findPage(searchMap, page, size);
+        return R.OK().data(pageResult);
     }
 
     /**

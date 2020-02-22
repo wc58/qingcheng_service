@@ -22,7 +22,7 @@ public interface BrandService {
      * @param size
      * @return
      */
-    public Page<Brand> findPage(int page, int size);
+    public Map<String,Object> findPage(int page, int size);
 
     /**
      * 条件查询
@@ -39,7 +39,7 @@ public interface BrandService {
      * @param size
      * @return
      */
-    public Page<Brand> findPage(Map<String, Object> searchMap, int page, int size);
+    public Map<String,Object> findPage(Map<String, Object> searchMap, int page, int size);
 
     /**
      * id查询
