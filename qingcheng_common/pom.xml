@@ -12,6 +12,11 @@
     <artifactId>qingcheng_common</artifactId>
     <!--公共模块-->
     <dependencies>
+        <!--日期时间工具-->
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+        </dependency>
         <!-- Spring -->
         <dependency>
             <groupId>org.springframework</groupId>
