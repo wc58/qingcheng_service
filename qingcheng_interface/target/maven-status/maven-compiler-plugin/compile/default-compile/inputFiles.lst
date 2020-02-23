@@ -3,6 +3,7 @@ E:\IdeaCode\qingcheng\qingcheng_interface\src\main\java\com\qingcheng\service\sy
 E:\IdeaCode\qingcheng\qingcheng_interface\src\main\java\com\qingcheng\service\order\OrderItemService.java
 E:\IdeaCode\qingcheng\qingcheng_interface\src\main\java\com\qingcheng\service\goods\PrefService.java
 E:\IdeaCode\qingcheng\qingcheng_interface\src\main\java\com\qingcheng\service\system\LoginLogService.java
+E:\IdeaCode\qingcheng\qingcheng_interface\src\main\java\com\qingcheng\service\goods\TemplateService.java
 E:\IdeaCode\qingcheng\qingcheng_interface\src\main\java\com\qingcheng\service\order\ReturnOrderService.java
 E:\IdeaCode\qingcheng\qingcheng_interface\src\main\java\com\qingcheng\service\config\FreightTemplateService.java
 E:\IdeaCode\qingcheng\qingcheng_interface\src\main\java\com\qingcheng\service\goods\AlbumService.java
@@ -11,6 +12,7 @@ E:\IdeaCode\qingcheng\qingcheng_interface\src\main\java\com\qingcheng\service\go
 E:\IdeaCode\qingcheng\qingcheng_interface\src\main\java\com\qingcheng\service\user\CitiesService.java
 E:\IdeaCode\qingcheng\qingcheng_interface\src\main\java\com\qingcheng\service\system\MenuService.java
 E:\IdeaCode\qingcheng\qingcheng_interface\src\main\java\com\qingcheng\service\goods\CategoryService.java
+E:\IdeaCode\qingcheng\qingcheng_interface\src\main\java\com\qingcheng\service\goods\SpecService.java
 E:\IdeaCode\qingcheng\qingcheng_interface\src\main\java\com\qingcheng\service\business\ActivityService.java
 E:\IdeaCode\qingcheng\qingcheng_interface\src\main\java\com\qingcheng\service\user\ProvincesService.java
 E:\IdeaCode\qingcheng\qingcheng_interface\src\main\java\com\qingcheng\service\business\AdService.java
