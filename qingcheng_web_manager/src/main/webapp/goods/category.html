@@ -52,8 +52,28 @@
     <div class="app-container">
         <div class="box">
             <div class="filter-container">
-                <el-button type="primary"  class="butT" @click="formVisible=true;pojo={parentId: searchMap.parentId }">新增</el-button>
-                <el-button type="primary"  class="butT" @click="returnQuery()">返回上级</el-button>
+                <!--查询表单-->
+                <el-form :inline="true">
+
+                    <el-form-item label="分类名称">
+                        <el-input v-model="searchMap.name" placeholder="分类名称" class="filter-item"></el-input>
+                    </el-form-item>
+                    <el-form-item label="显示状态">
+                        <el-input v-model="searchMap.isShow" placeholder="是否显示" class="filter-item"></el-input>
+                    </el-form-item>
+                    <el-form-item label="导航状态">
+                        <el-input v-model="searchMap.isMenu" placeholder="是否导航" class="filter-item"></el-input>
+                    </el-form-item>
+                    <el-button class="dalfBut" @click="fetchData()">查询</el-button>
+                    <el-button type="info" plain @click="clearData">清空</el-button>
+                    <el-button type="primary" class="butT"
+                               @click="formVisible=true;pojo={parentId:searchMap.parentId,isShow:'1'}">
+                        新增
+                    </el-button>
+                </el-form>
+                <el-button v-if="lastParentIds.length > 0" plain type="success" size="small" @click="queryLast()"><<
+                    上一级
+                </el-button>
             </div>
 
             <el-table :data="tableData" border style="width: 100%">

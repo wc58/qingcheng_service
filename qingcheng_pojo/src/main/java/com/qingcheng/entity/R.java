@@ -37,7 +37,7 @@ public class R implements Serializable {
      */
     public static R ERROR(){
         R r = new R();
-        r.setSuccess(true);
+        r.setSuccess(false);
         r.setCode(com.qingcheng.pojo.entity.ResultCode.ERROR);
         r.setMessage("操作失败");
         return r;
