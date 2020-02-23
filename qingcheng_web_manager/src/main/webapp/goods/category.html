@@ -153,60 +153,45 @@
             </div>
             <div class="add-form">
                 <!--弹出窗口-->
-                <el-dialog  title="编辑" :visible.sync="formVisible" >
+                <el-dialog title="编辑" :visible.sync="formVisible">
                     <el-form label-width="80px">
-                                <el-form-item label="分类名称"><el-input v-model="pojo.name"></el-input></el-form-item>
-
-        <el-form-item label="是否显示">
-            <el-switch
-                    v-model="pojo.isShow"
-                    active-color="#13ce66"
-                    inactive-color="#ff4949"
-                    active-value="1"
-                    inactive-value="0">
-            </el-switch>
-        </el-form-item>
-        <el-form-item label="是否导航">
-            <el-switch
-                    v-model="pojo.isMenu"
-                    active-color="#13ce66"
-                    inactive-color="#ff4949"
-                    active-value="1"
-                    inactive-value="0">
-            </el-switch>
-        </el-form-item>
-        <el-form-item label="排序"><el-input v-model="pojo.seq"></el-input></el-form-item>
-
-        <el-form-item label="模板ID">
-            <el-select v-model="pojo.templateId" filterable placeholder="请选择">
-                <el-option
-                        v-for="item in templateList"
-                        :key="item.id"
-                        :label="item.name"
-                        :value="item.id">
-                </el-option>
-            </el-select>
-
-        </el-form-item>
-
-                            <!-- 图片上传代码 如页面有图片上传功能放开注释 ****
-                            <el-form-item label="图片">
-                                <el-upload
-                                        class="avatar-uploader"
-                                        action="/upload/native.do"
-                                        :show-file-list="false"
-                                        :on-success="handleAvatarSuccess"
-                                        :before-upload="beforeAvatarUpload">
-                                    <img v-if="imageUrl" :src="imageUrl" class="avatar">
-                                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                                </el-upload>
-                            </el-form-item>
-                            -->
-
-                            <el-form-item>
-                                <el-button type="primary" @click="save()">保存</el-button>
-                                <el-button @click="formVisible = false" >关闭</el-button>
-                            </el-form-item>
+                        <el-form-item label="分类名称">
+                            <el-input v-model="pojo.name"></el-input>
+                        </el-form-item>
+                        <el-form-item label="排序">
+                            <el-input v-model="pojo.seq"></el-input>
+                        </el-form-item>
+                        <el-form-item label="是否显示">
+                            <el-switch
+                                    v-model="pojo.isShow"
+                                    active-color="#13ce66"
+                                    inactive-color="#ff4949"
+                                    active-value="1"
+                                    inactive-value="0">
+                            </el-switch>
+                        </el-form-item>
+                        <el-form-item label="是否导航">
+                            <el-switch
+                                    v-model="pojo.isMenu"
+                                    active-color="#13ce66"
+                                    inactive-color="#ff4949"
+                                    active-value="1"
+                                    inactive-value="0">
+                            </el-switch>
+                        </el-form-item>
+                        <el-form-item label="模板名称">
+                            <el-select v-model="pojo.templateId" filterable placeholder="请选择">
+                                <el-option
+                                        v-for="item in options"
+                                        :label="item.name"
+                                        :value="item.id">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button type="primary" @click="save()">保存</el-button>
+                            <el-button @click="formVisible = false">关闭</el-button>
+                        </el-form-item>
                     </el-form>
                 </el-dialog>
             </div>
@@ -310,51 +295,30 @@
                     // this.imageUrl=this.pojo.image //显示图片  如页面有图片上传功能放开注释
                 })
             },
-            dele (id){
+            dele(row) {
                 this.$confirm('确定要删除此记录吗?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
-                }).then( () => {
-                    axios.get(`/category/delete.do?id=${id}`).then(response => {
-                        if(response.data.code==0){
-                            this.fetchData (); //刷新列表
-                        }else{
-                            this.$alert(response.data.message)
+                }).then(() => {
+                    axios.get(`/category/delete.do?id=${row.id}`).then(response => {
+                        if (response.data.code == 20001) {
+                            this.$notify({
+                                title: row.name + '-分类删除失败',
+                                message:"该分类存在子分类",
+                                type: 'error'
+                            })
+                        } else {
+                            this.$notify({
+                                title: row.name + '-分类删除成功',
+                                type: 'success'
+                            })
+                            this.currentPage = 1;
                         }
-
+                        this.fetchData(); //刷新列表
                     })
                 })
             },
-            queryByParentId(parentId){
-                //做记号
-                this.parentIds.push(this.searchMap.parentId)
-                this.searchMap.parentId =parentId
-                this.fetchData()
-            },
-            returnQuery(){
-                if(this.parentIds.length>0){
-                    this.searchMap.parentId =this.parentIds[ this.parentIds.length-1 ]
-                    this.parentIds.splice( this.parentIds.length-1,1  ) //删除数组最后一个元素
-                    this.fetchData()
-                }
-            }
-			/* ****图片上传相关代码  如页面有图片上传功能放开注释 **** 
-            handleAvatarSuccess(res, file) {
-                this.imageUrl = file.response;
-            },
-            beforeAvatarUpload(file) {
-                const isJPG = file.type === 'image/jpeg';
-                const isLt2M = file.size / 1024 / 1024 < 2;
-
-                if (!isJPG) {
-                    this.$message.error('上传头像图片只能是 JPG 格式!');
-                }
-                if (!isLt2M) {
-                    this.$message.error('上传头像图片大小不能超过 2MB!');
-                }
-                return isJPG && isLt2M;
-            }*/
         }
     })
 </script>
