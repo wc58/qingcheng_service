@@ -18,9 +18,11 @@
             position: relative;
             overflow: hidden;
         }
+
         .avatar-uploader .el-upload:hover {
             border-color: #409EFF;
         }
+
         .avatar-uploader-icon {
             font-size: 28px;
             color: #8c939d;
@@ -29,6 +31,7 @@
             line-height: 150px;
             text-align: center;
         }
+
         .avatar {
             width: 150px;
             height: 70px;
@@ -76,69 +79,78 @@
                 </el-button>
             </div>
 
+
             <el-table :data="tableData" border style="width: 100%">
-                          <el-table-column prop="id" label="分类ID" width="80"></el-table-column>
-          <el-table-column prop="name" label="分类名称" width="200"></el-table-column>
-          <el-table-column prop="goodsNum" label="商品数量" width="80"></el-table-column>
-
-           <el-table-column label="级别" width="80">
-               <template slot-scope="scope">
-                   {{parentIds.length+1}}
-               </template>
-           </el-table-column>
-          <el-table-column  label="是否显示" width="80">
-              <template slot-scope="scope">
-                  <el-switch
-                          v-model="scope.row.isShow"
-                          active-color="#13ce66"
-                          inactive-color="#ff4949"
-                          active-value="1"
-                          inactive-value="0">
-                  </el-switch>
-              </template>
-
-          </el-table-column>
-          <el-table-column label="是否导航" width="80">
-              <template slot-scope="scope">
-                  <el-switch
-                          v-model="scope.row.isMenu"
-                          active-color="#13ce66"
-                          inactive-color="#ff4949"
-                          active-value="1"
-                          inactive-value="0">
-                  </el-switch>
-              </template>
-          </el-table-column>
-          <el-table-column prop="seq" label="排序" width="80"></el-table-column>
-          <el-table-column  label="模板" width="200">
-              <template slot-scope="scope">
-                  <el-select v-model="scope.row.templateId" disabled placeholder="请选择">
-                      <el-option
-                              v-for="item in templateList"
-                              :key="item.id"
-                              :label="item.name"
-                              :value="item.id">
-                      </el-option>
-                  </el-select>
-              </template>
-          </el-table-column>
-                <el-table-column
-                        label="设置"  >
+                <el-table-column label="索引" type="index" width="50"></el-table-column>
+                <el-table-column prop="name" label="名称" width="300"></el-table-column>
+                <el-table-column label="级数" width="60">
                     <template slot-scope="scope">
-                        <el-button v-if="parentIds.length<2" @click="queryByParentId(scope.row.id)" size="mini" type="primary" size="small">查看下级</el-button>
-
+                        {{lastParentIds.length + 1}}
+                    </template>
+                </el-table-column>
+                <el-table-column prop="goodsNum" label="分类数量" width="100"></el-table-column>
+                <el-table-column prop="seq" label="排序" width="80"></el-table-column>
+                <el-table-column label="是否显示" width="100">
+                    <template slot-scope="scope">
+                        <el-switch
+                                @change="showUpdate(scope.row)"
+                                v-model="scope.row.isShow"
+                                active-color="#13ce66"
+                                inactive-color="#ff4949"
+                                active-value="1"
+                                inactive-value="0">
+                        </el-switch>
+                    </template>
+                </el-table-column>
+                <el-table-column label="是否导航" width="100">
+                    <template slot-scope="scope">
+                        <el-switch
+                                @change="menuUpdate(scope.row)"
+                                v-model="scope.row.isMenu"
+                                active-color="#13ce66"
+                                inactive-color="#ff4949"
+                                active-value="1"
+                                inactive-value="0">
+                        </el-switch>
+                    </template>
+                </el-table-column>
+                <el-table-column label="模板" width="200">
+                    <template slot-scope="scope">
+                        <el-select v-model="scope.row.templateId" @change="templateUpdate(scope.row)" filterable
+                                   placeholder="请选择">
+                            <el-option
+                                    v-for="item in options"
+                                    :label="item.name"
+                                    :value="item.id">
+                            </el-option>
+                        </el-select>
                     </template>
                 </el-table-column>
 
-                    <el-table-column
-                            label="操作"  >
-                        <template slot-scope="scope">
-                            <el-button @click="edit(scope.row.id)" size="mini" type="primary" size="small">修改</el-button>
-                            <el-button @click="dele(scope.row.id)" size="mini" type="danger" size="small">删除</el-button>
-                        </template>
-                    </el-table-column>
+                <el-table-column label="操作">
+                    <template slot-scope="scope">
+                        <el-button type="primary" icon="el-icon-edit" size="small" circle
+                                   @click="edit(scope.row.id)"></el-button>
+                        <el-button type="danger" icon="el-icon-delete" size="small" circle
+                                   @click="dele(scope.row)"></el-button>
+                        <el-button v-if="lastParentIds.length < 2" plain type="success" size="small"
+                                   @click="queryNext(scope.row.id)">下一级 >>
+                        </el-button>
+                    </template>
+                </el-table-column>
             </el-table>
-
+            <div class="pagination-container">
+                <el-pagination
+                        class="pagiantion"
+                        @size-change="fetchData"
+                        @current-change="fetchData"
+                        :current-page.sync="currentPage"
+                        :page-sizes="[5, 10, 15, 20]"
+                        :page-size.sync="size"
+                        layout="total, sizes, prev, pager, next, jumper"
+                        :total="total">
+                </el-pagination>
+            </div>
             <div class="add-form">
                 <!--弹出窗口-->
                 <el-dialog  title="编辑" :visible.sync="formVisible" >
@@ -201,48 +213,96 @@
 
         </div>
     </div>
-
-
 </div>
 </body>
 <script src="/js/vue.js"></script>
 <script src="/js/axios.js"></script>
 <script src="/js/elementui.js"></script>
 <script>
-     new Vue({
+    new Vue({
         el: '#app',
-        data(){
+        data() {
             return {
                 tableData: [],
-                searchMap: {parentId:0},
+                currentPage: 1,
+                total: 10,
+                size: 10,
+                searchMap: {
+                    parentId: 0
+                },
                 pojo: {},
                 formVisible: false,
                 imageUrl: '',
-                parentIds:[],
-                templateList:[]
+                lastParentIds: [],
+                options: [],
             }
         },
-        created(){
+        created() {
             this.fetchData();
-            //加载模板列表
-            axios.get(`/template/findAll.do`).then(  response=>{
-                this.templateList=response.data
-            })
+            this.selectTemplate();
         },
-        methods:{
-            fetchData (){
-                axios.post(`/category/findList.do`,this.searchMap).then(response => {
-                    this.tableData = response.data
+        methods: {
+            fetchData() {
+                axios.post(`/category/findPage.do?page=${this.currentPage}&size=${this.size}`, this.searchMap).then(response => {
+                    this.tableData = response.data.rows;
+                    this.total = response.data.total;
+
                 });
             },
-            save (){
+            //是否显示修改操作
+            showUpdate(row) {
+                this.pojo = {}
+                this.pojo.isShow = row.isShow
+                this.pojo.id = row.id
+                this.save()
+            },
+            //是否导航修改操作
+            menuUpdate(row) {
+                this.pojo = {}
+                this.pojo.isMenu = row.isMenu
+                this.pojo.id = row.id
+                this.save()
+            },
+            //修改模板
+            templateUpdate(row) {
+                this.pojo = {}
+                this.pojo.templateId = row.templateId
+                this.pojo.id = row.id
+                this.save()
+            },
+            //查询模板列表
+            selectTemplate() {
+                axios.get(`/template/findAll.do`).then(response => {
+                    this.options = response.data
+                });
+            },
+            //查下一级
+            queryNext(parentId) {
+                this.lastParentIds.push(this.searchMap.parentId)
+                this.searchMap.parentId = parentId
+                this.currentPage = 1;
+                this.fetchData()
+            },
+            //查看上一级
+            queryLast() {
+                this.searchMap.parentId = this.lastParentIds.pop()
+                this.fetchData()
+            },
+            //清空条件
+            clearData() {
+                this.searchMap.name = ''
+                this.searchMap.isShow = ''
+                this.searchMap.isMenu = ''
+                this.fetchData()
+            },
+            save() {
                 // this.pojo.image= this.imageUrl; //如页面有图片上传功能放开注释
-                axios.post(`/category/${this.pojo.id==null?'add':'update'}.do`,this.pojo).then(response => {
-                    this.fetchData (); //刷新列表
-                    this.formVisible = false ;//关闭窗口
+                axios.post(`/category/${this.pojo.id == null ? 'add' : 'update'}.do`, this.pojo).then(response => {
+                    this.fetchData(); //刷新列表
+                    this.formVisible = false;//关闭窗口
                 });
             },
-            edit (id){
+            edit(id) {
                 this.formVisible = true // 打开窗口
                 // 调用查询
                 axios.get(`/category/findById.do?id=${id}`).then(response => {

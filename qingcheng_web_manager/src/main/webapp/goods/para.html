@@ -111,20 +111,6 @@
                             <el-input v-model="pojo.seq"></el-input>
                         </el-form-item>
 
-                        <!-- 图片上传代码 如页面有图片上传功能放开注释 ****
-                        <el-form-item label="图片">
-                            <el-upload
-                                    class="avatar-uploader"
-                                    action="/upload/native.do"
-                                    :show-file-list="false"
-                                    :on-success="handleAvatarSuccess"
-                                    :before-upload="beforeAvatarUpload">
-                                <img v-if="imageUrl" :src="imageUrl" class="avatar">
-                                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                            </el-upload>
-                        </el-form-item>
-                        -->
-
                         <el-form-item>
                             <el-button type="primary" @click="save()">保存</el-button>
                             <el-button @click="formVisible = false">关闭</el-button>
