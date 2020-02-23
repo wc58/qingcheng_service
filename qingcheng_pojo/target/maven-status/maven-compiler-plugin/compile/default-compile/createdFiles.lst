@@ -23,8 +23,10 @@ com\qingcheng\pojo\order\ReturnOrder.class
 com\qingcheng\pojo\goods\Sku.class
 com\qingcheng\pojo\user\Provinces.class
 com\qingcheng\pojo\goods\Pref.class
+com\qingcheng\pojo\goods\Template.class
 com\qingcheng\pojo\entity\ResultCode.class
 com\qingcheng\pojo\goods\Category.class
 com\qingcheng\pojo\order\Order.class
 com\qingcheng\pojo\user\User.class
+com\qingcheng\pojo\goods\Spec.class
 com\qingcheng\pojo\order\OrderConfig.class

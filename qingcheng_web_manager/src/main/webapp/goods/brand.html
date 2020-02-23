@@ -87,15 +87,19 @@
             </template>
         </el-table-column>
     </el-table>
-    <el-pagination
-            @size-change="fetchData"
-            @current-change="fetchData"
-            :current-page.sync="currentPage"
-            :page-sizes="[10, 20, 30, 40]"
-            :page-size.sync="size"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="total">
-    </el-pagination>
+
+    <div class="pagination-container">
+        <el-pagination
+                @size-change="fetchData"
+                @current-change="fetchData"
+                :current-page.sync="currentPage"
+                :page-sizes="[10, 20, 30, 40]"
+                :page-size.sync="size"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="total">
+        </el-pagination>
+    </div>
+
 </div>
 <script src="../js/vue(1).js"></script>
 <script src="../js/axios.js"></script>

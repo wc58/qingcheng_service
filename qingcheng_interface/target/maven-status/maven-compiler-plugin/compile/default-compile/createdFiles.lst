@@ -5,6 +5,7 @@ com\qingcheng\service\user\ProvincesService.class
 com\qingcheng\service\order\PreferentialService.class
 com\qingcheng\service\order\ReturnCauseService.class
 com\qingcheng\service\system\RoleService.class
+com\qingcheng\service\goods\TemplateService.class
 com\qingcheng\service\user\AreasService.class
 com\qingcheng\service\user\AddressService.class
 com\qingcheng\service\system\ResourceService.class
@@ -16,6 +17,7 @@ com\qingcheng\service\order\OrderLogService.class
 com\qingcheng\service\system\MenuService.class
 com\qingcheng\service\business\AdService.class
 com\qingcheng\service\business\ActivityService.class
+com\qingcheng\service\goods\SpecService.class
 com\qingcheng\service\system\AdminService.class
 com\qingcheng\service\system\LoginLogService.class
 com\qingcheng\service\user\UserService.class
