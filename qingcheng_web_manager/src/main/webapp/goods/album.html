@@ -63,7 +63,7 @@
 
                     <el-button class="dalfBut" @click="fetchData()">查询</el-button>
                     <el-button type="info" plain @click="clearData">清空</el-button>
-                    <el-button type="primary" class="butT" @click="formVisible=true;pojo={}">新增</el-button>
+                    <el-button type="primary" class="butT" @click="formVisible=true;pojo={};imageUrl=''">新增</el-button>
                 </el-form>
             </div>
 
@@ -78,9 +78,9 @@
                 <el-table-column
                         label="操作">
                     <template slot-scope="scope">
-                        <el-button @click="goPicture(scope.row.id)" size="mini" type="primary" size="small">查看</el-button>
-                        <el-button @click="edit(scope.row.id)" size="mini" type="primary" size="small">修改</el-button>
-                        <el-button @click="dele(scope.row.id)" size="mini" type="danger" size="small">删除</el-button>
+                        <el-button icon="el-icon-search" circle @click="goPicture(scope.row.id)"></el-button>
+                        <el-button type="primary" icon="el-icon-edit" circle @click="edit(scope.row.id)" ></el-button>
+                        <el-button type="danger" icon="el-icon-delete" circle @click="dele(scope.row.id)"></el-button>
                     </template>
                 </el-table-column>
             </el-table>
