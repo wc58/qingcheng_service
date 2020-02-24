@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>album管理</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" href="../plugins/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+
+    <!-- 上传图片框样式，不使用上传组件可以删除此样式 -->
+    <style>
+        .avatar-uploader .el-upload {
+            border: 1px dashed #d9d9d9;
+            border-radius: 6px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .avatar-uploader .el-upload:hover {
+            border-color: #409EFF;
+        }
+
+        .avatar-uploader-icon {
+            font-size: 28px;
+            color: #8c939d;
+            width: 150px;
+            height: 70px;
+            line-height: 150px;
+            text-align: center;
+        }
+
+        .avatar {
+            width: 150px;
+            height: 70px;
+            display: block;
+        }
+
+    </style>
+    <script src="../js/util.js"></script>
+</head>
+<body class="hold-transition">
+<div id="app">
+
+    <div class="content-header">
+        <h1>管理<small>图片管理</small></h1>
+        <el-breadcrumb separator-class="el-icon-arrow-right" class="breadcrumb">
+            <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+            <el-breadcrumb-item>管理</el-breadcrumb-item>
+            <el-breadcrumb-item>图片管理</el-breadcrumb-item>
+        </el-breadcrumb>
+    </div>
+
+    <div class="app-container">
+        <div class="box">
+            <div style="text-align: right">
+                <el-button type="primary" plain @click="goBack"><< 返回</el-button>
+                <el-button type="primary" plain @click="formVisible = true;fileList=[]">新增图片</el-button>
+            </div>
+            <div class="filter-container">
+                <div>
+                    <el-row>
+                        <el-col :span="4" v-for="item in data">
+                            <el-card :body-style="{ padding: '4px' }" style="margin: 10px">
+                                <img width="215" height="215" :src="item"/>
+                                <div>
+                                    <div class="bottom clearfix">
+                                        <el-button type="text" class="button" @click="del(item)">删除照片</el-button>
+                                    </div>
+                                </div>
+                            </el-card>
+                        </el-col>
+                    </el-row>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--弹出窗口-->
+    <el-dialog title="编辑" :visible.sync="formVisible">
+        <el-form label-width="80px">
+            <el-form-item label="相册图片">
+                <el-upload
+                        class="upload-demo"
+                        ref="upload"
+                        multiple="true"
+                        action="/upload/OSS/images.do"
+                        :on-success="handleAvatarSuccess"
+                        :before-upload="beforeAvatarUpload"
+                        :file-list="fileList"
+                        list-type="picture"
+                        :auto-upload="false">
+                    <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
+                    <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器
+                    </el-button>
+                    <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+                </el-upload>
+            </el-form-item>
+        </el-form>
+    </el-dialog>
+</div>
+</body>
+<script src="/js/vue.js"></script>
+<script src="/js/axios.js"></script>
+<script src="/js/elementui.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data() {
+            return {
+                searchMap: {},
+                data: ['https://qingcheng58.oss-cn-beijing.aliyuncs.com/2020/02/24/images/174e7ee7-8090-433d-98db-22c5a10ef1ddA.jpg', 'https://qingcheng58.oss-cn-beijing.aliyuncs.com/2020/02/24/images/17e3d361-f8aa-43b7-9d7c-5196b5040f441005-800x450.jpg', 'https://qingcheng58.oss-cn-beijing.aliyuncs.com/2020/02/24/images/174e7ee7-8090-433d-98db-22c5a10ef1ddA.jpg', 'https://qingcheng58.oss-cn-beijing.aliyuncs.com/2020/02/24/images/17e3d361-f8aa-43b7-9d7c-5196b5040f441005-800x450.jpg', 'https://qingcheng58.oss-cn-beijing.aliyuncs.com/2020/02/24/images/174e7ee7-8090-433d-98db-22c5a10ef1ddA.jpg', 'https://qingcheng58.oss-cn-beijing.aliyuncs.com/2020/02/24/images/17e3d361-f8aa-43b7-9d7c-5196b5040f441005-800x450.jpg', 'https://qingcheng58.oss-cn-beijing.aliyuncs.com/2020/02/24/images/174e7ee7-8090-433d-98db-22c5a10ef1ddA.jpg', 'https://qingcheng58.oss-cn-beijing.aliyuncs.com/2020/02/24/images/17e3d361-f8aa-43b7-9d7c-5196b5040f441005-800x450.jpg', 'https://qingcheng58.oss-cn-beijing.aliyuncs.com/2020/02/24/images/174e7ee7-8090-433d-98db-22c5a10ef1ddA.jpg', 'https://qingcheng58.oss-cn-beijing.aliyuncs.com/2020/02/24/images/17e3d361-f8aa-43b7-9d7c-5196b5040f441005-800x450.jpg', 'https://qingcheng58.oss-cn-beijing.aliyuncs.com/2020/02/24/images/174e7ee7-8090-433d-98db-22c5a10ef1ddA.jpg', 'https://qingcheng58.oss-cn-beijing.aliyuncs.com/2020/02/24/images/17e3d361-f8aa-43b7-9d7c-5196b5040f441005-800x450.jpg', 'https://qingcheng58.oss-cn-beijing.aliyuncs.com/2020/02/24/images/174e7ee7-8090-433d-98db-22c5a10ef1ddA.jpg', 'https://qingcheng58.oss-cn-beijing.aliyuncs.com/2020/02/24/images/17e3d361-f8aa-43b7-9d7c-5196b5040f441005-800x450.jpg', 'https://qingcheng58.oss-cn-beijing.aliyuncs.com/2020/02/24/images/174e7ee7-8090-433d-98db-22c5a10ef1ddA.jpg', 'https://qingcheng58.oss-cn-beijing.aliyuncs.com/2020/02/24/images/17e3d361-f8aa-43b7-9d7c-5196b5040f441005-800x450.jpg', 'https://qingcheng58.oss-cn-beijing.aliyuncs.com/2020/02/24/images/174e7ee7-8090-433d-98db-22c5a10ef1ddA.jpg', 'https://qingcheng58.oss-cn-beijing.aliyuncs.com/2020/02/24/images/17e3d361-f8aa-43b7-9d7c-5196b5040f441005-800x450.jpg', 'https://qingcheng58.oss-cn-beijing.aliyuncs.com/2020/02/24/images/174e7ee7-8090-433d-98db-22c5a10ef1ddA.jpg', 'https://qingcheng58.oss-cn-beijing.aliyuncs.com/2020/02/24/images/17e3d361-f8aa-43b7-9d7c-5196b5040f441005-800x450.jpg', 'https://qingcheng58.oss-cn-beijing.aliyuncs.com/2020/02/24/images/174e7ee7-8090-433d-98db-22c5a10ef1ddA.jpg', 'https://qingcheng58.oss-cn-beijing.aliyuncs.com/2020/02/24/images/17e3d361-f8aa-43b7-9d7c-5196b5040f441005-800x450.jpg', 'https://qingcheng58.oss-cn-beijing.aliyuncs.com/2020/02/24/images/174e7ee7-8090-433d-98db-22c5a10ef1ddA.jpg', 'https://qingcheng58.oss-cn-beijing.aliyuncs.com/2020/02/24/images/17e3d361-f8aa-43b7-9d7c-5196b5040f441005-800x450.jpg', 'https://qingcheng58.oss-cn-beijing.aliyuncs.com/2020/02/24/images/174e7ee7-8090-433d-98db-22c5a10ef1ddA.jpg', 'https://qingcheng58.oss-cn-beijing.aliyuncs.com/2020/02/24/images/17e3d361-f8aa-43b7-9d7c-5196b5040f441005-800x450.jpg', 'https://qingcheng58.oss-cn-beijing.aliyuncs.com/2020/02/24/images/174e7ee7-8090-433d-98db-22c5a10ef1ddA.jpg', 'https://qingcheng58.oss-cn-beijing.aliyuncs.com/2020/02/24/images/17e3d361-f8aa-43b7-9d7c-5196b5040f441005-800x450.jpg', 'https://qingcheng58.oss-cn-beijing.aliyuncs.com/2020/02/24/images/174e7ee7-8090-433d-98db-22c5a10ef1ddA.jpg', 'https://qingcheng58.oss-cn-beijing.aliyuncs.com/2020/02/24/images/17e3d361-f8aa-43b7-9d7c-5196b5040f441005-800x450.jpg', 'https://qingcheng58.oss-cn-beijing.aliyuncs.com/2020/02/24/images/174e7ee7-8090-433d-98db-22c5a10ef1ddA.jpg', 'https://qingcheng58.oss-cn-beijing.aliyuncs.com/2020/02/24/images/17e3d361-f8aa-43b7-9d7c-5196b5040f441005-800x450.jpg'],
+                albumId: 0,
+                pojo: {},
+                formVisible: false,
+                fileList: []
+            }
+        },
+        created() {
+            this.albumId = getQueryString('id')
+            this.searchMap.id = this.albumId
+            this.pojo.id = this.albumId
+            this.fetchData()
+        },
+        methods: {
+            fetchData() {
+                axios.get(`/album/findById.do?id=${this.albumId}`).then(response => {
+                    this.data = response.data.imageItems.split(",")
+                });
+            },
+            goBack() {
+                location.href = 'album.html'
+            },
+            submitUpload() {
+                this.$refs.upload.submit();
+            },
+            handleAvatarSuccess(res, file) {
+                this.data.push(file.response)
+                this.update()
+            },
+            beforeAvatarUpload(file) {
+                const isJPG = file.type === 'image/jpeg';
+                const isLt2M = file.size / 1024 / 1024 < 2;
+                if (!isJPG) {
+                    this.$message.error('上传头像图片只能是 JPG 格式!');
+                }
+                if (!isLt2M) {
+                    this.$message.error('上传头像图片大小不能超过 2MB!');
+                }
+                return isJPG && isLt2M;
+            },
+            del(url) {
+                this.$confirm('确定要删除此记录吗?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    for (let i = 0; i < this.data.length; i++) {
+                        if (this.data[i] == url) {
+                            this.data.splice(i, 1)
+                        }
+                    }
+                    this.update();
+                })
+            },
+            update() {
+                this.pojo.imageItems = this.data.join(",")
+                axios.post(`/album/update.do`, this.pojo).then(response => {
+                    this.fetchData(); //刷新列表
+                    this.formVisible = false;//关闭窗口
+                });
+            }
+        }
+    })
+</script>
+
+</html>
