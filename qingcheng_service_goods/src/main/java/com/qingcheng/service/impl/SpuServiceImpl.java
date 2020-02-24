@@ -15,6 +15,7 @@ import com.qingcheng.pojo.goods.Sku;
 import com.qingcheng.pojo.goods.Spu;
 import com.qingcheng.service.goods.SpuService;
 import com.qingcheng.utils.IdWorker;
+import org.apache.ibatis.ognl.EnumerationIterator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
@@ -49,37 +50,30 @@ public class SpuServiceImpl implements SpuService {
     @Override
     @Transactional
     public void saveGoods(Goods goods) {
-        //保存spu
         Spu spu = goods.getSpu();
-        //雪花id
-        spu.setId(idWorker.nextId() + "");
-        add(spu);
-        //保存sku
-        Date date = new Date();
-        List<Sku> skuList = goods.getSkuList();
         String categoryName = categoryMapper.selectByPrimaryKey(spu.getCategory3Id()).getName();
-        for (Sku sku : skuList) {
-            sku.setId(idWorker.nextId() + "");
-            //spu外键
-            sku.setSpuId(spu.getId());
-            //sku名称=spu名称 + 规格
-            String name = spu.getName();
-            Map<String, String> speccMap = JSON.parseObject(sku.getSpec(), Map.class);
-            for (String value : speccMap.values()) {
-                name += " " + value;
+        Date date = new Date();
+        //保存spu
+        if (spu.getId() == null) {
+            //雪花id
+            spu.setId(idWorker.nextId() + "");
+            add(spu);
+            //保存sku
+            List<Sku> skuList = goods.getSkuList();
+            for (Sku sku : skuList) {
+                addSku(sku, spu, categoryName, date);
             }
-            sku.setName(name);
-            //设置时间
-            sku.setCreateTime(date);
-            sku.setUpdateTime(date);
-            //设置分类
-            sku.setCategoryId(spu.getCategory3Id());
-            sku.setCategoryName(categoryName);
-            //评论数
-            sku.setCommentNum(0);
-            //销售数
-            sku.setSaleNum(0);
-            skuMapper.insert(sku);
+        } else {
+            spuMapper.updateByPrimaryKey(spu);
+            List<Sku> skuList = goods.getSkuList();
+            for (Sku sku : skuList) {
+                if (sku.getId() == null) {
+                    addSku(sku, spu, categoryName, date);
+                } else {
+                    sku.setUpdateTime(date);
+                    skuMapper.updateByPrimaryKey(sku);
+                }
+            }
         }
         //建立分类与品牌的关联
         CategoryBrand categoryBrand = new CategoryBrand();
@@ -89,6 +83,57 @@ public class SpuServiceImpl implements SpuService {
         if (count == 0) {
             categoryBrandMapper.insert(categoryBrand);
         }
+    }
+
+    /**
+     * 商品规格信息添加
+     *
+     * @param sku
+     * @param spu
+     * @param categoryName
+     * @param date
+     */
+    private void addSku(Sku sku, Spu spu, String categoryName, Date date) {
+        sku.setId(idWorker.nextId() + "");
+        //spu外键
+        sku.setSpuId(spu.getId());
+        //sku名称=spu名称 + 规格
+        String name = spu.getName();
+        Map<String, String> speccMap = JSON.parseObject(sku.getSpec(), Map.class);
+        for (String value : speccMap.values()) {
+            name += " " + value;
+        }
+        sku.setName(name);
+        //设置时间
+        sku.setCreateTime(date);
+        sku.setUpdateTime(date);
+        //设置分类
+        sku.setCategoryId(spu.getCategory3Id());
+        sku.setCategoryName(categoryName);
+        //评论数
+        sku.setCommentNum(0);
+        //销售数
+        sku.setSaleNum(0);
+        skuMapper.insert(sku);
+    }
+
+    /**
+     * 根据id查询商品信息
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public Goods findGoodsById(String id) {
+        Goods goods = new Goods();
+        Spu spu = spuMapper.selectByPrimaryKey(id);
+        Example example = new Example(Sku.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("spuId", id);
+        List<Sku> skus = skuMapper.selectByExample(example);
+        goods.setSpu(spu);
+        goods.setSkuList(skus);
+        return goods;
     }
 
     /**
