@@ -1,0 +1,61 @@
+{
+  "spu": {
+    "name": "这个是商品名称",
+    "caption": "这个是副标题",
+    "brandId": 12,
+    "category1Id": 558,
+    "category2Id": 559,
+    "category3Id": 560,
+    "freightId": 10,
+    "image": "http://www.qingcheng.com/image/1.jpg",
+    "images": "http://www.qingcheng.com/image/1.jpg,http://www.qingcheng.com/image/2.jpg",
+    "introduction": "这个是商品详情，html代码",
+    "paraItems": {
+      "出厂年份": "2019",
+      "赠品": "充电器"
+    },
+    "saleService": "七天包退,闪电退货",
+    "sn": "020102331",
+    "specItems": {
+      "颜色": [
+        "红",
+        "绿"
+      ],
+      "机身内存": [
+        "64G",
+        "8G"
+      ]
+    },
+    "templateId": 42
+  },
+  "skuList": [
+    {
+      "sn": "10192010292",
+      "num": 100,
+      "alertNum": 20,
+      "price": 900000,
+      "spec": {
+        "颜色": "红",
+        "机身内存": "64G"
+      },
+      "image": "http://www.qingcheng.com/image/1.jpg",
+      "images": "http://www.qingcheng.com/image/1.jpg,http://www.qingcheng.com/image/2.jpg",
+      "status": "1",
+      "weight": 130
+    },
+    {
+      "sn": "10192010293",
+      "num": 100,
+      "alertNum": 20,
+      "price": 600000,
+      "spec": {
+        "颜色": "绿",
+        "机身内存": "8G"
+      },
+      "image": "http://www.qingcheng.com/image/1.jpg",
+      "images": "http://www.qingcheng.com/image/1.jpg,http://www.qingcheng.com/image/2.jpg",
+      "status": "1",
+      "weight": 130
+    }
+  ]
+}
