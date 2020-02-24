@@ -37,7 +37,7 @@
     <inspection_tool class="HtmlUnknownTag" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="myValues">
         <value>
-          <list size="14">
+          <list size="17">
             <item index="0" class="java.lang.String" itemvalue="el-table-column" />
             <item index="1" class="java.lang.String" itemvalue="el-table" />
             <item index="2" class="java.lang.String" itemvalue="el-pagination" />
@@ -52,6 +52,9 @@
             <item index="11" class="java.lang.String" itemvalue="el-switch" />
             <item index="12" class="java.lang.String" itemvalue="el-select" />
             <item index="13" class="java.lang.String" itemvalue="el-option" />
+            <item index="14" class="java.lang.String" itemvalue="el-card" />
+            <item index="15" class="java.lang.String" itemvalue="el-row" />
+            <item index="16" class="java.lang.String" itemvalue="el-col" />
           </list>
         </value>
       </option>

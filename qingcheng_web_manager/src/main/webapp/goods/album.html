@@ -78,6 +78,7 @@
                 <el-table-column
                         label="操作">
                     <template slot-scope="scope">
+                        <el-button @click="goPicture(scope.row.id)" size="mini" type="primary" size="small">查看</el-button>
                         <el-button @click="edit(scope.row.id)" size="mini" type="primary" size="small">修改</el-button>
                         <el-button @click="dele(scope.row.id)" size="mini" type="danger" size="small">删除</el-button>
                     </template>
@@ -103,16 +104,16 @@
                             <el-input v-model="pojo.title"></el-input>
                         </el-form-item>
                         <el-form-item label="相册封面">
-                                <el-upload
-                                        class="avatar-uploader"
-                                        action="/upload/OSS/images.do"
-                                        :show-file-list="false"
-                                        :on-success="handleAvatarSuccess"
-                                        :before-upload="beforeAvatarUpload">
-                                    <img v-if="imageUrl" :src="imageUrl" class="avatar">
-                                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                                </el-upload>
-                            </el-form-item>
+                            <el-upload
+                                    class="avatar-uploader"
+                                    action="/upload/OSS/cover.do"
+                                    :show-file-list="false"
+                                    :on-success="handleAvatarSuccess"
+                                    :before-upload="beforeAvatarUpload">
+                                <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                            </el-upload>
+                        </el-form-item>
                         </el-form-item>
 
                         <el-form-item>
@@ -157,13 +158,16 @@
                     this.total = response.data.total;
                 });
             },
+            goPicture(id) {
+                location.href = `albumImages.html?id=${id}`
+            },
             //清空条件
             clearData() {
                 this.searchMap = {}
                 this.fetchData()
             },
             save() {
-                this.pojo.image= this.imageUrl; //如页面有图片上传功能放开注释
+                this.pojo.image = this.imageUrl; //如页面有图片上传功能放开注释
                 axios.post(`/album/${this.pojo.id == null ? 'add' : 'update'}.do`, this.pojo).then(response => {
                     this.fetchData(); //刷新列表
                     this.formVisible = false;//关闭窗口
@@ -174,7 +178,7 @@
                 // 调用查询
                 axios.get(`/album/findById.do?id=${id}`).then(response => {
                     this.pojo = response.data;
-                    this.imageUrl=this.pojo.image //显示图片  如页面有图片上传功能放开注释
+                    this.imageUrl = this.pojo.image //显示图片  如页面有图片上传功能放开注释
                 })
             },
             dele(id) {
