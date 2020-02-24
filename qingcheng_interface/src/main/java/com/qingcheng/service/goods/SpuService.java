@@ -37,4 +37,5 @@ public interface SpuService {
 
     public void saveGoods(Goods goods);
 
+    public Goods findGoodsById(String id);
 }

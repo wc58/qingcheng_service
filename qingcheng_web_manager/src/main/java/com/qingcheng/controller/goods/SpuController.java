@@ -29,6 +29,11 @@ public class SpuController {
         return R.OK();
     }
 
+    @GetMapping("/findGoodsById")
+    public Goods findGoodsById(String id){
+        return spuService.findGoodsById(id);
+    }
+
 
     @GetMapping("/findAll")
     public List<Spu> findAll() {
