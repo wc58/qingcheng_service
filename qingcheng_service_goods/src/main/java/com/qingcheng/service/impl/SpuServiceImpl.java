@@ -4,10 +4,12 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.qingcheng.dao.CategoryBrandMapper;
 import com.qingcheng.dao.CategoryMapper;
 import com.qingcheng.dao.SkuMapper;
 import com.qingcheng.dao.SpuMapper;
 import com.qingcheng.entity.PageResult;
+import com.qingcheng.pojo.goods.CategoryBrand;
 import com.qingcheng.pojo.goods.Goods;
 import com.qingcheng.pojo.goods.Sku;
 import com.qingcheng.pojo.goods.Spu;
@@ -35,6 +37,9 @@ public class SpuServiceImpl implements SpuService {
 
     @Autowired
     private CategoryMapper categoryMapper;
+
+    @Autowired
+    private CategoryBrandMapper categoryBrandMapper;
 
     /**
      * 保存商品
@@ -75,6 +80,14 @@ public class SpuServiceImpl implements SpuService {
             //销售数
             sku.setSaleNum(0);
             skuMapper.insert(sku);
+        }
+        //建立分类与品牌的关联
+        CategoryBrand categoryBrand = new CategoryBrand();
+        categoryBrand.setBrandId(spu.getBrandId());
+        categoryBrand.setCategoryId(spu.getCategory3Id());
+        int count = categoryBrandMapper.selectCount(categoryBrand);
+        if (count == 0) {
+            categoryBrandMapper.insert(categoryBrand);
         }
     }
 
