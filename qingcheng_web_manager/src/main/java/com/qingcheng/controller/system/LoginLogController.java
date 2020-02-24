@@ -1,10 +1,10 @@
 package com.qingcheng.controller.system;
 
-import com.alibaba.dubbo.config.annotation.Reference;
 import com.qingcheng.entity.PageResult;
 import com.qingcheng.entity.Result;
 import com.qingcheng.pojo.system.LoginLog;
 import com.qingcheng.service.system.LoginLogService;
+import jdk.nashorn.internal.ir.annotations.Reference;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

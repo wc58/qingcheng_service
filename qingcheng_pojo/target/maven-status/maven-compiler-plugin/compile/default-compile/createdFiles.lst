@@ -10,6 +10,7 @@ com\qingcheng\pojo\user\Areas.class
 com\qingcheng\pojo\system\Resource.class
 com\qingcheng\pojo\order\Preferential.class
 com\qingcheng\entity\PageResult.class
+com\qingcheng\pojo\goods\Spu.class
 com\qingcheng\pojo\business\Ad.class
 com\qingcheng\pojo\user\Address.class
 com\qingcheng\pojo\system\Menu.class
