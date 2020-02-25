@@ -48,4 +48,8 @@ public interface SpuService {
     public void put(String id);
 
     public int putMany(String[] ids);
+
+    public void remove(String id);
+
+    public void restore(String id);
 }

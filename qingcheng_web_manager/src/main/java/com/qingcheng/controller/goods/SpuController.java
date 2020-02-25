@@ -91,6 +91,28 @@ public class SpuController {
         return R.OK().message("上架数量：" + i);
     }
 
+    @GetMapping("/remove")
+    public R remove(String id) {
+        try {
+            spuService.remove(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return R.ERROR();
+        }
+        return R.OK();
+    }
+
+    @GetMapping("/restore")
+    public R restore(String id) {
+        try {
+            spuService.restore(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return R.ERROR();
+        }
+        return R.OK();
+    }
+
     @GetMapping("/findAll")
     public List<Spu> findAll() {
         return spuService.findAll();

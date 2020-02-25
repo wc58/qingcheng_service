@@ -237,6 +237,32 @@ public class SpuServiceImpl implements SpuService {
     }
 
     /**
+     * 逻辑删除
+     *
+     * @param id
+     */
+    @Override
+    public void remove(String id) {
+        Spu spu = new Spu();
+        spu.setId(id);
+        spu.setIsDelete("1");
+        spuMapper.updateByPrimaryKey(spu);
+    }
+
+    /**
+     * 还原商品
+     *
+     * @param id
+     */
+    @Override
+    public void restore(String id) {
+        Spu spu = new Spu();
+        spu.setId(id);
+        spu.setIsDelete("0");
+        spuMapper.updateByPrimaryKey(spu);
+    }
+
+    /**
      * 返回全部记录
      *
      * @return
@@ -318,7 +344,14 @@ public class SpuServiceImpl implements SpuService {
      * @param id
      */
     public void delete(String id) {
-        spuMapper.deleteByPrimaryKey(id);
+        Example example = new Example(Spu.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("id", id);
+        criteria.andEqualTo("isDelete", "1");
+        int i = spuMapper.deleteByExample(example);
+        if (i == 0) {
+            throw new RuntimeException("删除失败，请检查是否逻辑删除");
+        }
     }
 
 
