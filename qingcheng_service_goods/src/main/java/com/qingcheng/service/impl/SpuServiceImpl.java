@@ -15,14 +15,10 @@ import com.qingcheng.pojo.goods.Sku;
 import com.qingcheng.pojo.goods.Spu;
 import com.qingcheng.service.goods.SpuService;
 import com.qingcheng.utils.IdWorker;
-import com.sun.xml.internal.bind.v2.model.core.ID;
-import org.apache.ibatis.ognl.EnumerationIterator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
-import java.security.SecurityPermission;
-import java.security.cert.CRLException;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -159,7 +155,7 @@ public class SpuServiceImpl implements SpuService {
         if (status.equals("1")) {
             spu.setIsMarketable("1");
         }
-        spuMapper.updateByPrimaryKey(spu);
+        spuMapper.updateByPrimaryKeySelective(spu);
         //记录商品审核日志
 
         //记录商品修改日志
@@ -176,7 +172,7 @@ public class SpuServiceImpl implements SpuService {
         Spu spu = new Spu();
         spu.setId(id);
         spu.setIsMarketable("0");
-        spuMapper.updateByPrimaryKey(spu);
+        spuMapper.updateByPrimaryKeySelective(spu);
         //商品日志
     }
 
@@ -210,11 +206,11 @@ public class SpuServiceImpl implements SpuService {
     public void put(String id) {
         //商品下架
         Spu spu = spuMapper.selectByPrimaryKey(id);
-        if (!spu.getStatus().equals("1")) {
+        if (!"1".equals(spu.getStatus())) {
             throw new RuntimeException("此商品未通过审核");
         }
         spu.setIsMarketable("1");
-        spuMapper.updateByPrimaryKey(spu);
+        spuMapper.updateByPrimaryKeySelective(spu);
         //商品日志
     }
 
@@ -246,7 +242,7 @@ public class SpuServiceImpl implements SpuService {
         Spu spu = new Spu();
         spu.setId(id);
         spu.setIsDelete("1");
-        spuMapper.updateByPrimaryKey(spu);
+        spuMapper.updateByPrimaryKeySelective(spu);
     }
 
     /**
@@ -259,7 +255,7 @@ public class SpuServiceImpl implements SpuService {
         Spu spu = new Spu();
         spu.setId(id);
         spu.setIsDelete("0");
-        spuMapper.updateByPrimaryKey(spu);
+        spuMapper.updateByPrimaryKeySelective(spu);
     }
 
     /**
