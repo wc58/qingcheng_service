@@ -57,7 +57,7 @@ public class SpuController {
     }
 
     @PostMapping("/pullMany")
-    public R pullMany(String[] ids) {
+    public R pullMany(@RequestBody String[] ids) {
         int i = 0;
         try {
             i = spuService.pullMany(ids);
@@ -80,7 +80,7 @@ public class SpuController {
     }
 
     @PostMapping("/putMany")
-    public R putMany(String[] ids) {
+    public R putMany(@RequestBody String[] ids) {
         int i = 0;
         try {
             i = spuService.putMany(ids);
