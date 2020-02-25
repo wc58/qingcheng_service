@@ -99,9 +99,12 @@ public class SpuServiceImpl implements SpuService {
         sku.setSpuId(spu.getId());
         //sku名称=spu名称 + 规格
         String name = spu.getName();
-        Map<String, String> speccMap = JSON.parseObject(sku.getSpec(), Map.class);
-        for (String value : speccMap.values()) {
-            name += " " + value;
+        //不启用sku规格列表
+        if (sku.getSpec() != null && !"".equals(sku.getSpec())) {
+            Map<String, String> speccMap = JSON.parseObject(sku.getSpec(), Map.class);
+            for (String value : speccMap.values()) {
+                name += " " + value;
+            }
         }
         sku.setName(name);
         //设置时间
