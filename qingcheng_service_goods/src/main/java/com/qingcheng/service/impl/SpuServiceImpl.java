@@ -20,6 +20,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
+import java.security.SecurityPermission;
+import java.security.cert.CRLException;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -178,6 +181,7 @@ public class SpuServiceImpl implements SpuService {
 
     /**
      * 商品上架
+     *
      * @param id
      */
     @Override
@@ -190,6 +194,24 @@ public class SpuServiceImpl implements SpuService {
         spu.setIsMarketable("1");
         spuMapper.updateByPrimaryKey(spu);
         //商品日志
+    }
+
+    @Override
+    public int putMany(String[] ids) {
+        //批量上架
+        Spu spu = new Spu();
+        spu.setIsMarketable("1");
+        //设置条件
+        Example example = new Example(Spu.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andIn("id", Arrays.asList(ids));
+        criteria.andEqualTo("status", "1");
+        criteria.andEqualTo("isMarketable", "0");
+        //更新
+        int i = spuMapper.updateByExampleSelective(spu, example);
+        //记录商品日志
+
+        return i;
     }
 
     /**
