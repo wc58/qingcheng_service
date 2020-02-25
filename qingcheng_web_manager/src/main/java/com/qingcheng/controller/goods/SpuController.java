@@ -56,10 +56,22 @@ public class SpuController {
         return R.OK();
     }
 
-    @GetMapping("/push")
-    public R push(String id) {
+    @PostMapping("/pullMany")
+    public R pullMany(String[] ids) {
+        int i = 0;
         try {
-            spuService.push(id);
+            i = spuService.pullMany(ids);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return R.ERROR();
+        }
+        return R.OK().message("下架数量：" + i);
+    }
+
+    @GetMapping("/put")
+    public R put(String id) {
+        try {
+            spuService.put(id);
         } catch (Exception e) {
             e.printStackTrace();
             return R.ERROR();
@@ -67,15 +79,16 @@ public class SpuController {
         return R.OK();
     }
 
-    @GetMapping("/putMany")
+    @PostMapping("/putMany")
     public R putMany(String[] ids) {
+        int i = 0;
         try {
-            spuService.putMany(ids);
+            i = spuService.putMany(ids);
         } catch (Exception e) {
             e.printStackTrace();
             return R.ERROR();
         }
-        return R.OK();
+        return R.OK().message("上架数量：" + i);
     }
 
     @GetMapping("/findAll")

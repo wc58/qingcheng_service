@@ -43,7 +43,9 @@ public interface SpuService {
 
     public void pull(String id);
 
-    public void push(String id);
+    public int pullMany(String[] ids);
+
+    public void put(String id);
 
     public int putMany(String[] ids);
 }

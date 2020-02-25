@@ -15,6 +15,7 @@ import com.qingcheng.pojo.goods.Sku;
 import com.qingcheng.pojo.goods.Spu;
 import com.qingcheng.service.goods.SpuService;
 import com.qingcheng.utils.IdWorker;
+import com.sun.xml.internal.bind.v2.model.core.ID;
 import org.apache.ibatis.ognl.EnumerationIterator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -180,12 +181,33 @@ public class SpuServiceImpl implements SpuService {
     }
 
     /**
+     * 商品批量下架
+     *
+     * @param ids
+     */
+    @Override
+    public int pullMany(String[] ids) {
+        //批量下架
+        Spu spu = new Spu();
+        spu.setIsMarketable("0");
+        //设置条件
+        Example example = new Example(Spu.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andIn("id", Arrays.asList(ids));
+        criteria.andEqualTo("isMarketable", "1");
+        int i = spuMapper.updateByExampleSelective(spu, example);
+        //商品日志
+
+        return i;
+    }
+
+    /**
      * 商品上架
      *
      * @param id
      */
     @Override
-    public void push(String id) {
+    public void put(String id) {
         //商品下架
         Spu spu = spuMapper.selectByPrimaryKey(id);
         if (!spu.getStatus().equals("1")) {
