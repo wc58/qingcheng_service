@@ -22,10 +22,10 @@ public class OrderItemController {
      * @param orderId
      * @return
      */
-    @GetMapping("/findByOrderId")
-    public List<OrderItem> findByOrderId(String orderId) {
+    @PostMapping("/findByOrderId")
+    public List<OrderItem> findByOrderId(@RequestBody String[] orderIds) {
         //查询并返回
-        return orderItemService.findByOrderId(orderId);
+        return orderItemService.findByOrderId(orderIds);
     }
 
     @GetMapping("/findAll")

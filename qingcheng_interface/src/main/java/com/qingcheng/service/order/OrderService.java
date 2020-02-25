@@ -1,5 +1,4 @@
 package com.qingcheng.service.order;
-
 import com.qingcheng.entity.PageResult;
 import com.qingcheng.pojo.order.Order;
 import com.qingcheng.pojo.order.OrderDetails;
@@ -18,10 +17,10 @@ public interface OrderService {
     public PageResult<Order> findPage(int page, int size);
 
 
-    public List<Order> findList(Map<String, Object> searchMap);
+    public List<Order> findList(Map<String,Object> searchMap);
 
 
-    public PageResult<Order> findPage(Map<String, Object> searchMap, int page, int size);
+    public PageResult<Order> findPage(Map<String,Object> searchMap,int page, int size);
 
 
     public Order findById(String id);
@@ -36,4 +35,5 @@ public interface OrderService {
 
     public OrderDetails findOrderById(String id);
 
+    public void batchSend(List<Order> orders);
 }

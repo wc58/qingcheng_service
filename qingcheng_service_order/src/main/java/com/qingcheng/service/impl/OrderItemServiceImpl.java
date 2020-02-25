@@ -10,6 +10,7 @@ import com.qingcheng.service.order.OrderItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -27,11 +28,11 @@ public class OrderItemServiceImpl implements OrderItemService {
      * @return
      */
     @Override
-    public List<OrderItem> findByOrderId(String orderId) {
+    public List<OrderItem> findByOrderId(String[] orderIds) {
         //设置条件
         Example example = new Example(OrderItem.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("orderId", orderId);
+        criteria.andIn("orderId", Arrays.asList(orderIds));
         //查询并返回
         return orderItemMapper.selectByExample(example);
     }

@@ -6,6 +6,7 @@ import com.qingcheng.entity.Result;
 import com.qingcheng.pojo.order.Order;
 import com.qingcheng.pojo.order.OrderDetails;
 import com.qingcheng.service.order.OrderService;
+import javafx.scene.layout.BorderStrokeStyle;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -25,6 +26,15 @@ public class OrderController {
     @GetMapping("/findOrderById")
     public OrderDetails findOrderById(String id) {
         return orderService.findOrderById(id);
+    }
+
+    /**
+     * 订单发货
+     * @param orders
+     */
+    @PostMapping("/batchSend")
+    public void batchSend(@RequestBody List<Order> orders){
+        orderService.batchSend(orders);
     }
 
     @GetMapping("/findAll")

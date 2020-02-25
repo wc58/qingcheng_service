@@ -4,15 +4,19 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.qingcheng.dao.OrderItemMapper;
+import com.qingcheng.dao.OrderLogMapper;
 import com.qingcheng.dao.OrderMapper;
 import com.qingcheng.entity.PageResult;
 import com.qingcheng.pojo.order.Order;
 import com.qingcheng.pojo.order.OrderDetails;
 import com.qingcheng.pojo.order.OrderItem;
+import com.qingcheng.pojo.order.OrderLog;
 import com.qingcheng.service.order.OrderService;
+import com.qingcheng.utils.IdWorker;
 import org.springframework.beans.factory.annotation.Autowired;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -24,6 +28,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private OrderItemMapper orderItemMapper;
+
+    @Autowired
+    private OrderLogMapper orderLogMapper;
+
+    @Autowired
+    private IdWorker idWorker;
 
     /**
      * 返回订单组合体
@@ -40,13 +50,45 @@ public class OrderServiceImpl implements OrderService {
         //设置条件
         Example example = new Example(OrderItem.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("orderId",id);
+        criteria.andEqualTo("orderId", id);
         //查询订单详情
         List<OrderItem> orderItems = orderItemMapper.selectByExample(example);
         //封装并返回
         orderDetails.setOrder(order);
         orderDetails.setOrderItems(orderItems);
         return orderDetails;
+    }
+
+    /**
+     * 发货
+     *
+     * @param orders
+     */
+    @Override
+    public void batchSend(List<Order> orders) {
+        for (Order order : orders) {
+            if (order.getShippingCode() == null || order.getShippingName() == null) {
+                throw new RuntimeException("请选择快递公司和填写快递单号");
+            }
+        }
+        for (Order order : orders) {
+            order.setOrderStatus("3");//订单状态 已发货
+            order.setConsignStatus("2");//发货状态 已发货
+            order.setConsignTime(new Date());//发货时间
+            order.setUpdateTime(new Date());
+            orderMapper.updateByPrimaryKeySelective(order);
+            //记录订单日志
+            OrderLog orderLog = new OrderLog();
+            orderLog.setId(idWorker.nextId() + "");
+            orderLog.setOperater("system");
+            orderLog.setOperateTime(new Date());
+            orderLog.setOrderId(order.getId());
+            orderLog.setOrderStatus("2");
+            orderLog.setConsignStatus("1");
+            orderLog.setPayStatus(order.getPayStatus());
+            //保存订单日志
+            orderLogMapper.insert(orderLog);
+        }
     }
 
 
