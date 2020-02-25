@@ -56,6 +56,17 @@ public class SpuController {
         return R.OK();
     }
 
+    @GetMapping("/push")
+    public R push(String id) {
+        try {
+            spuService.push(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return R.ERROR();
+        }
+        return R.OK();
+    }
+
     @GetMapping("/findAll")
     public List<Spu> findAll() {
         return spuService.findAll();

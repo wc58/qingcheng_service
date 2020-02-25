@@ -177,6 +177,22 @@ public class SpuServiceImpl implements SpuService {
     }
 
     /**
+     * 商品上架
+     * @param id
+     */
+    @Override
+    public void push(String id) {
+        //商品下架
+        Spu spu = spuMapper.selectByPrimaryKey(id);
+        if (!spu.getStatus().equals("1")) {
+            throw new RuntimeException("此商品未通过审核");
+        }
+        spu.setIsMarketable("1");
+        spuMapper.updateByPrimaryKey(spu);
+        //商品日志
+    }
+
+    /**
      * 返回全部记录
      *
      * @return
