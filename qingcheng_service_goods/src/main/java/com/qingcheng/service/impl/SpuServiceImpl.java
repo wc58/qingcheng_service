@@ -140,6 +140,43 @@ public class SpuServiceImpl implements SpuService {
     }
 
     /**
+     * 商品审核
+     *
+     * @param id
+     * @param status
+     * @param message
+     */
+    @Override
+    public void audit(String id, String status, String message) {
+        //修改状态
+        Spu spu = new Spu();
+        spu.setId(id);
+        spu.setStatus(status);
+        if (status.equals("1")) {
+            spu.setIsMarketable("1");
+        }
+        spuMapper.updateByPrimaryKey(spu);
+        //记录商品审核日志
+
+        //记录商品修改日志
+    }
+
+    /**
+     * 商品下架
+     *
+     * @param id
+     */
+    @Override
+    public void pull(String id) {
+        //商品下架
+        Spu spu = new Spu();
+        spu.setId(id);
+        spu.setIsMarketable("0");
+        spuMapper.updateByPrimaryKey(spu);
+        //商品日志
+    }
+
+    /**
      * 返回全部记录
      *
      * @return

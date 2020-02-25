@@ -38,4 +38,8 @@ public interface SpuService {
     public void saveGoods(Goods goods);
 
     public Goods findGoodsById(String id);
+
+    public void audit(String id, String status, String message);
+
+    public void pull(String id);
 }

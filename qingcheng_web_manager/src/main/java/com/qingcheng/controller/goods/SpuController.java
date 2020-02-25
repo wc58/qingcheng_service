@@ -30,10 +30,31 @@ public class SpuController {
     }
 
     @GetMapping("/findGoodsById")
-    public Goods findGoodsById(String id){
+    public Goods findGoodsById(String id) {
         return spuService.findGoodsById(id);
     }
 
+    @PostMapping("/audit")
+    public R audit(@RequestBody Map<String, String> map) {
+        try {
+            spuService.audit(map.get("id"), map.get("status"), map.get("message"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return R.ERROR();
+        }
+        return R.OK();
+    }
+
+    @GetMapping("/pull")
+    public R pull(String id) {
+        try {
+            spuService.pull(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return R.ERROR();
+        }
+        return R.OK();
+    }
 
     @GetMapping("/findAll")
     public List<Spu> findAll() {
