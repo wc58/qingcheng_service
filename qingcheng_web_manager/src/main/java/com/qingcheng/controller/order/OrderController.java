@@ -17,6 +17,11 @@ public class OrderController {
     @Reference
     private OrderService orderService;
 
+    /**
+     * 根据id查询订单组合体
+     * @param id
+     * @return
+     */
     @GetMapping("/findOrderById")
     public OrderDetails findOrderById(String id) {
         return orderService.findOrderById(id);
