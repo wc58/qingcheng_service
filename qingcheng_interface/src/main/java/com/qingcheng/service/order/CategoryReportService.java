@@ -9,5 +9,6 @@ public interface CategoryReportService {
 
     public List<CategoryReport> categoryReport(LocalDate date);
 
+    public void createCategoryReport();
 
 }
