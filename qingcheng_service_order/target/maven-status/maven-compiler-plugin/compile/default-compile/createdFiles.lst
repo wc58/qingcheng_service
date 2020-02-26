@@ -13,5 +13,7 @@ com\qingcheng\service\impl\OrderTask.class
 com\qingcheng\service\impl\OrderLogServiceImpl.class
 com\qingcheng\service\impl\OrderConfigServiceImpl.class
 com\qingcheng\service\impl\OrderItemServiceImpl.class
+com\qingcheng\service\impl\CategoryReportServiceImpl.class
+com\qingcheng\dao\CategoryReportMapper.class
 com\qingcheng\dao\OrderItemMapper.class
 com\qingcheng\service\impl\OrderServiceImpl.class

@@ -1,7 +1,9 @@
 E:\IdeaCode\qingcheng\qingcheng_service_order\src\main\java\com\qingcheng\dao\ReturnOrderMapper.java
 E:\IdeaCode\qingcheng\qingcheng_service_order\src\main\java\com\qingcheng\service\impl\PreferentialServiceImpl.java
 E:\IdeaCode\qingcheng\qingcheng_service_order\src\main\java\com\qingcheng\service\impl\OrderItemServiceImpl.java
+E:\IdeaCode\qingcheng\qingcheng_service_order\src\main\java\com\qingcheng\service\impl\CategoryReportServiceImpl.java
 E:\IdeaCode\qingcheng\qingcheng_service_order\src\main\java\com\qingcheng\service\impl\OrderServiceImpl.java
+E:\IdeaCode\qingcheng\qingcheng_service_order\src\main\java\com\qingcheng\dao\CategoryReportMapper.java
 E:\IdeaCode\qingcheng\qingcheng_service_order\src\main\java\com\qingcheng\service\impl\OrderConfigServiceImpl.java
 E:\IdeaCode\qingcheng\qingcheng_service_order\src\main\java\com\qingcheng\dao\OrderMapper.java
 E:\IdeaCode\qingcheng\qingcheng_service_order\src\main\java\com\qingcheng\dao\OrderItemMapper.java
