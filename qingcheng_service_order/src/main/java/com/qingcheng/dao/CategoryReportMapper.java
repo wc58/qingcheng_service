@@ -7,6 +7,7 @@ import tk.mybatis.mapper.common.BaseMapper;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 public interface CategoryReportMapper extends BaseMapper<CategoryReport> {
 
@@ -32,4 +33,9 @@ public interface CategoryReportMapper extends BaseMapper<CategoryReport> {
             "\tDATE_FORMAT(o.pay_time, '%Y-%m-%d')")
     public List<CategoryReport> categoryReport(@Param("date") LocalDate date);
 
+    @Select("SELECT category_id1 categoryId1, SUM(num) num,SUM(money) money\n" +
+            "FROM tb_category_report\n" +
+            "WHERE count_date>=#{startDate} AND count_date<=#{endDate}\n" +
+            "GROUP BY category_id1")
+    public List<Map> category1Count(@Param("startDate") String startDate, @Param("endDate") String endDate);
 }
