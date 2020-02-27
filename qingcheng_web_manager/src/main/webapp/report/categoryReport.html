@@ -39,9 +39,25 @@
                 width="180">
         </el-table-column>
         <el-table-column
-                prop="money"
-                label="总结金额"
+                label="数量比例"
                 width="180">
+            <template slot-scope="scope">
+                {{(scope.row.num / totalNum*100).toFixed(1)}}%
+            </template>
+        </el-table-column>
+        <el-table-column
+                label="总金额"
+                width="180">
+          <template slot-scope="scope">
+              {{scope.row.money/100}}
+          </template>
+        </el-table-column>
+        <el-table-column
+                label="金额比例"
+                width="180">
+            <template slot-scope="scope">
+                {{(scope.row.money / totalMoney*100).toFixed(1)}}%
+            </template>
         </el-table-column>
     </el-table>
 </div>
@@ -57,7 +73,9 @@
         data() {
             return {
                 tableData: [],
-                dateRange: []
+                dateRange: [],
+                totalNum: 0,
+                totalMoney: 0
             }
         },
         created() {
@@ -66,9 +84,15 @@
         methods: {
             fetchData() {
                 let startDate = this.dateRange[0].Format("yyyy-MM-dd")
-                let endDate = alert(this.dateRange[1])
+                let endDate = this.dateRange[1].Format("yyyy-MM-dd")
                 axios.get(`/categoryReport/category1Count.do?startDate=${startDate}&endDate=${endDate}`).then(response => {
                     this.tableData = response.data
+                    this.totalNum = 0
+                    this.totalMoney = 0
+                    for (let i = 0; i < this.tableData.length; i++) {
+                        this.totalNum += this.tableData[i].num
+                        this.totalMoney += this.tableData[i].money
+                    }
                 })
             }
         }
