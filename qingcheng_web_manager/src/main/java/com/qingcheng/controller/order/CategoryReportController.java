@@ -36,7 +36,7 @@ public class CategoryReportController {
      * @return
      */
     @RequestMapping("/category1Count")
-    public List<Map> category1Count(String startDate, String endDate) {
+    public List<Map<String,String>> category1Count(String startDate, String endDate) {
         return categoryReportService.category1Count(startDate, endDate);
     }
 

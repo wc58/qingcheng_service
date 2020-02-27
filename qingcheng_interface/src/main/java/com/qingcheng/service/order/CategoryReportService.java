@@ -12,6 +12,6 @@ public interface CategoryReportService {
 
     public void createCategoryReport();
 
-    public List<Map> category1Count(String startDate, String endDate);
+    public List<Map<String ,String>> category1Count(String startDate, String endDate);
 
 }

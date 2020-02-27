@@ -45,7 +45,7 @@ public class CategoryReportServiceImpl implements CategoryReportService {
     }
 
     @Override
-    public List<Map> category1Count(String startDate, String endDate) {
+    public List<Map<String,String>> category1Count(String startDate, String endDate) {
         return categoryReportMapper.category1Count(startDate, endDate);
     }
 

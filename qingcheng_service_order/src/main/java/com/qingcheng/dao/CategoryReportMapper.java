@@ -37,5 +37,5 @@ public interface CategoryReportMapper extends BaseMapper<CategoryReport> {
             "FROM tb_category_report r,tb_category1 c\n" +
             "WHERE count_date>=#{startDate} AND count_date<=#{endDate}\n" +
             "GROUP BY category_id1,c.`name`")
-    public List<Map> category1Count(@Param("startDate") String startDate, @Param("endDate") String endDate);
+    public List<Map<String,String>> category1Count(@Param("startDate") String startDate, @Param("endDate") String endDate);
 }

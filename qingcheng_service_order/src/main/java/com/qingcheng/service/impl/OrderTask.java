@@ -17,8 +17,9 @@ public class OrderTask {
     /**
      * 定时生成统计数据
      */
-    @Scheduled(cron = "0 * * * * ?")
+    @Scheduled(cron = "0 0 1 * * ?")
     public void test() {
+        System.out.println("统计数据");
         categoryReportService.createCategoryReport();
     }
 
