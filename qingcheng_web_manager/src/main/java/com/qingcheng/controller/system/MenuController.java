@@ -16,6 +16,16 @@ public class MenuController {
     @Reference
     private MenuService menuService;
 
+    /**
+     * 返回所有菜单
+     *
+     * @return
+     */
+    @GetMapping("/findAllMenu")
+    public List<Map<String, Object>> findAllMenu() {
+        return menuService.findAllMenu();
+    }
+
     @GetMapping("/findAll")
     public List<Menu> findAll(){
         return menuService.findAll();

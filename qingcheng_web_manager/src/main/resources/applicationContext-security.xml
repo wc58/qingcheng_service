@@ -20,6 +20,10 @@
         <logout/>
         <!--关闭crsf验证-->
         <csrf disabled="true"/>
+        <!--同源策略-->
+        <headers>
+            <frame-options policy="SAMEORIGIN"/>
+        </headers>
     </http>
     <!--认证管理器-->
     <authentication-manager>
@@ -27,6 +31,7 @@
             <password-encoder ref="bCryptPasswordEncoder"/>
         </authentication-provider>
     </authentication-manager>
+
 
     <beans:bean class="com.qingcheng.controller.UserDetailsServiceImpl" id="detailsService"/>
     <beans:bean class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" id="bCryptPasswordEncoder"/>
