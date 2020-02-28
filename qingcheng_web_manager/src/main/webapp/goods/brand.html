@@ -4,99 +4,120 @@
     <meta charset="UTF-8">
     <title>品牌列表</title>
     <link rel="stylesheet" href="../css/elementui(1)_20190730_094254.css">
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" href="../plugins/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
 <div id="app">
-    <!--条件输入框-->
-    <el-form :inline="true">
-        <el-form-item label="品牌名称">
-            <el-input placeholder="品牌名称" v-model="searchMap.name"></el-input>
-        </el-form-item>
-        <el-form-item label="品牌首字母">
-            <el-input placeholder="品牌名称" v-model="searchMap.letter"></el-input>
-        </el-form-item>
-        <el-form-item>
-            <el-button type="primary" plain @click="fetchData">查询</el-button>
-        </el-form-item>
-        <el-form-item>
-            <el-button type="info" plain @click="clearData">清空</el-button>
-        </el-form-item>
-        <el-button type="success" plain @click="pojo={},imageUrl='',dialogTableVisible = true">新增</el-button>
-    </el-form>
-    <!--新增输入框-->
-    <el-dialog title="更新品牌" :visible.sync="dialogTableVisible">
-        <el-form label-width="85px">
-            <el-form-item label="品牌名称">
-                <el-input placeholder="品牌名称" v-model="pojo.name"></el-input>
-            </el-form-item>
-            <el-form-item label="品牌首字母">
-                <el-input placeholder="品牌名称" v-model="pojo.letter"></el-input>
-            </el-form-item>
-            <el-form-item label="品牌logo">
-                <!--图片上传-->
-                <el-upload
-                        class="avatar-uploader"
-                        action="/upload/OSS/brand.do"
-                        :show-file-list="false"
-                        :on-success="handleAvatarSuccess"
-                        :before-upload="beforeAvatarUpload">
-                    <img v-if="imageUrl" :src="imageUrl" class="avatar" alt="">
-                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                </el-upload>
-            </el-form-item>
-            <el-form-item label="品牌排序">
-                <el-input placeholder="品牌排序" v-model="pojo.seq"></el-input>
-            </el-form-item>
-        </el-form>
-        <span slot="footer" class="dialog-footer">
+
+    <div class="content-header">
+        <h1>管理<small>品牌管理</small></h1>
+        <el-breadcrumb separator-class="el-icon-arrow-right" class="breadcrumb">
+            <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+            <el-breadcrumb-item>管理</el-breadcrumb-item>
+            <el-breadcrumb-item>品牌管理</el-breadcrumb-item>
+        </el-breadcrumb>
+    </div>
+
+    <div class="app-container">
+        <div class="box">
+            <div class="filter-container">
+                <!--条件输入框-->
+                <el-form :inline="true">
+                    <el-form-item label="品牌名称">
+                        <el-input placeholder="品牌名称" v-model="searchMap.name"></el-input>
+                    </el-form-item>
+                    <el-form-item label="品牌首字母">
+                        <el-input placeholder="品牌名称" v-model="searchMap.letter"></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" plain @click="fetchData">查询</el-button>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="info" plain @click="clearData">清空</el-button>
+                    </el-form-item>
+                    <el-button type="success" plain @click="pojo={},imageUrl='',dialogTableVisible = true">新增
+                    </el-button>
+                </el-form>
+                <!--新增输入框-->
+                <el-dialog title="更新品牌" :visible.sync="dialogTableVisible">
+                    <el-form label-width="85px">
+                        <el-form-item label="品牌名称">
+                            <el-input placeholder="品牌名称" v-model="pojo.name"></el-input>
+                        </el-form-item>
+                        <el-form-item label="品牌首字母">
+                            <el-input placeholder="品牌名称" v-model="pojo.letter"></el-input>
+                        </el-form-item>
+                        <el-form-item label="品牌logo">
+                            <!--图片上传-->
+                            <el-upload
+                                    class="avatar-uploader"
+                                    action="/upload/OSS/brand.do"
+                                    :show-file-list="false"
+                                    :on-success="handleAvatarSuccess"
+                                    :before-upload="beforeAvatarUpload">
+                                <img v-if="imageUrl" :src="imageUrl" class="avatar" alt="">
+                                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                            </el-upload>
+                        </el-form-item>
+                        <el-form-item label="品牌排序">
+                            <el-input placeholder="品牌排序" v-model="pojo.seq"></el-input>
+                        </el-form-item>
+                    </el-form>
+                    <span slot="footer" class="dialog-footer">
             <el-button @click="dialogTableVisible = false">取 消</el-button>
             <el-button type="primary" @click="save">保 存</el-button>
          </span>
-    </el-dialog>
+                </el-dialog>
 
-    <!--表格-->
-    <el-table
-            :data="tableData"
-            border
-            style="width: 100%">
-        <el-table-column label="索引" type="index" width="50">
-        </el-table-column>
-        <el-table-column
-                prop="name"
-                label="名称"
-                width="180">
-        </el-table-column>
-        <el-table-column
-                prop="letter"
-                label="首字母"
-                width="180">
-        </el-table-column>
-        <el-table-column
-                label="logo">
-            <template slot-scope="scope">
-                <img width="100px" height="50px" :src="scope.row.image">
-            </template>
-        </el-table-column>
-        <el-table-column label="操作">
-            <template slot-scope="scope">
-                <el-button type="primary" icon="el-icon-edit" circle @click="update(scope.row.id)"></el-button>
-                <el-button type="danger" icon="el-icon-delete" circle @click="del(scope.row)"></el-button>
-            </template>
-        </el-table-column>
-    </el-table>
+                <!--表格-->
+                <el-table
+                        :data="tableData"
+                        border
+                        style="width: 100%">
+                    <el-table-column label="索引" type="index" width="50">
+                    </el-table-column>
+                    <el-table-column
+                            prop="name"
+                            label="名称"
+                            width="180">
+                    </el-table-column>
+                    <el-table-column
+                            prop="letter"
+                            label="首字母"
+                            width="180">
+                    </el-table-column>
+                    <el-table-column
+                            label="logo">
+                        <template slot-scope="scope">
+                            <img width="100px" height="50px" :src="scope.row.image">
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="操作">
+                        <template slot-scope="scope">
+                            <el-button type="primary" icon="el-icon-edit" circle
+                                       @click="update(scope.row.id)"></el-button>
+                            <el-button type="danger" icon="el-icon-delete" circle @click="del(scope.row)"></el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
 
-    <div class="pagination-container">
-        <el-pagination
-                @size-change="fetchData"
-                @current-change="fetchData"
-                :current-page.sync="currentPage"
-                :page-sizes="[10, 20, 30, 40]"
-                :page-size.sync="size"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="total">
-        </el-pagination>
+                <div class="pagination-container">
+                    <el-pagination
+                            @size-change="fetchData"
+                            @current-change="fetchData"
+                            :current-page.sync="currentPage"
+                            :page-sizes="[10, 20, 30, 40]"
+                            :page-size.sync="size"
+                            layout="total, sizes, prev, pager, next, jumper"
+                            :total="total">
+                    </el-pagination>
+                </div>
+            </div>
+        </div>
     </div>
-
 </div>
 <script src="../js/vue(1).js"></script>
 <script src="../js/axios.js"></script>
