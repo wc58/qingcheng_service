@@ -1,12 +1,14 @@
 package com.qingcheng.controller.system;
 
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.qingcheng.entity.PageResult;
 import com.qingcheng.entity.Result;
 import com.qingcheng.pojo.system.LoginLog;
 import com.qingcheng.service.system.LoginLogService;
-import jdk.nashorn.internal.ir.annotations.Reference;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +27,13 @@ public class LoginLogController {
     @GetMapping("/findPage")
     public PageResult<LoginLog> findPage(int page, int size){
         return loginLogService.findPage(page, size);
+    }
+    @GetMapping("/findPageByLogin")
+    public PageResult<LoginLog> findPageByLogin(int page, int size){
+        String name = SecurityContextHolder.getContext().getAuthentication().getName();
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("loginName",name);
+        return loginLogService.findPage(map,page,size);
     }
 
     @PostMapping("/findList")
