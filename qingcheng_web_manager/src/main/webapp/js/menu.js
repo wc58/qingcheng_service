@@ -19,7 +19,7 @@ var menu={
                 {
                     "path": "2-1-1",
                     "title": "商品列表",
-                    "linkUrl":"goods/aaa.html",
+                    "linkUrl":"all-medical-list.html",
                 },
                 {
                     "path": "2-1-2",

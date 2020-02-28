@@ -2,7 +2,7 @@ package com.qingcheng.controller.file;
 
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClient;
-import com.qingcheng.controller.utils.ConstantPropertiesUtils;
+import com.qingcheng.utils.ConstantPropertiesUtils;
 import org.joda.time.DateTime;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;

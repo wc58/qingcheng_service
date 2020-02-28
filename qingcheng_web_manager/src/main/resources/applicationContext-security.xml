@@ -16,7 +16,7 @@
     <!--页面拦截规则-->
     <http>
         <intercept-url pattern="/**" access="hasAnyRole('ROLE_CHAO')"/>
-        <form-login  default-target-url="/main.html" login-page="/login.html" authentication-failure-forward-url="/login.html"  />
+        <form-login default-target-url="/main.html" login-page="/login.html" authentication-failure-forward-url="/login.html" authentication-success-handler-ref="authenticationSuccessHandler" />
         <logout/>
         <!--关闭crsf验证-->
         <csrf disabled="true"/>
@@ -35,4 +35,5 @@
 
     <beans:bean class="com.qingcheng.controller.UserDetailsServiceImpl" id="detailsService"/>
     <beans:bean class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" id="bCryptPasswordEncoder"/>
+    <beans:bean class="com.qingcheng.controller.AuthenticationSuccessHandlerImpl" id="authenticationSuccessHandler"></beans:bean>
 </beans:beans>
