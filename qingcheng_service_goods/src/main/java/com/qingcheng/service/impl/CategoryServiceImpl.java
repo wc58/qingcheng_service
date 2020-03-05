@@ -7,9 +7,12 @@ import com.qingcheng.dao.CategoryMapper;
 import com.qingcheng.entity.PageResult;
 import com.qingcheng.pojo.goods.Category;
 import com.qingcheng.service.goods.CategoryService;
+import org.omg.PortableServer.LIFESPAN_POLICY_ID;
 import org.springframework.beans.factory.annotation.Autowired;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +21,40 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
     private CategoryMapper categoryMapper;
+
+    /**
+     * 返回分类树
+     *
+     * @return
+     */
+    @Override
+    public List<Map<String, Object>> findCategoryTree() {
+        Example example = new Example(Category.class);
+        example.setOrderByClause("seq");
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("isShow", "1");
+        List<Category> categories = categoryMapper.selectByExample(example);
+        return this.findByParentId(categories, 0);
+    }
+
+    /**
+     * 递归查找子分类
+     * @param categories
+     * @param parentId
+     * @return
+     */
+    private List<Map<String, Object>> findByParentId(List<Category> categories, Integer parentId) {
+        List<Map<String, Object>> maps = new ArrayList<>();
+        for (Category category : categories) {
+            if (category.getParentId().equals(parentId)) {
+                HashMap<String, Object> map = new HashMap<>();
+                map.put("name",category.getName());
+                map.put("menus",this.findByParentId(categories,category.getId()));
+                maps.add(map);
+            }
+        }
+        return maps;
+    }
 
     /**
      * 返回全部记录
@@ -110,6 +147,7 @@ public class CategoryServiceImpl implements CategoryService {
         }
         categoryMapper.deleteByPrimaryKey(id);
     }
+
 
     /**
      * 构建查询条件
